@@ -49,6 +49,16 @@ This project provides a containerized Apache NiFi instance with PostgreSQL drive
 - **Persistent Storage**: Data persists across container restarts
 - **Secure Access**: HTTPS enabled on port 8443
 
+## PostgreSQL Database Connection Configuration
+
+To configure a PostgreSQL database connection in NiFi, use the following settings in your DBCPConnectionPool controller service:
+
+- **Database Connection URL**: `jdbc:postgresql://<host>/<database>`
+- **Database Driver Class Name**: `org.postgresql.Driver`
+- **Database Driver Location(s)**: `/opt/nifi/nifi-current/lib/postgresql-42.7.8.jar`
+- **Database User**: `<user_name>`
+- **Password**: `<password>`
+
 ## Volumes
 
 The following volumes ensure data persistence:
