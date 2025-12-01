@@ -1,13 +1,10 @@
 # Data Engineer Project
 
-A data engineering environment using Apache NiFi, Terraform (AWS/Azure), and Databricks.
+A data engineering environment using Apache NiFi for data flow management and processing.
 
 ## Overview
 
-This project provides:
-- A containerized Apache NiFi instance with PostgreSQL driver support.
-- Terraform scaffolding to provision cloud infrastructure on AWS or Azure.
-- Databricks Terraform provider setup to manage workspaces and jobs.
+This project provides a containerized Apache NiFi instance with PostgreSQL driver support, ideal for building data pipelines and ETL workflows.
 
 ## Prerequisites
 
@@ -40,22 +37,9 @@ This project provides:
 
 ```
 .
-├── docker-compose.yml                  # Service orchestration (NiFi)
-├── Dockerfile                         # Custom NiFi image with PostgreSQL driver
-├── DataOps/
-│   └── terraform/
-│       ├── aws/                       # AWS provider setup
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
-│       ├── azure/                     # Azure provider setup
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── outputs.tf
-│       └── databricks/                # Databricks provider setup
-│           ├── main.tf
-│           └── variables.tf
-└── README.md                         # Project documentation
+├── docker-compose.yml    # Service orchestration
+├── Dockerfile           # Custom NiFi image with PostgreSQL driver
+└── README.md           # Project documentation
 ```
 
 ## Features
@@ -64,8 +48,6 @@ This project provides:
 - **PostgreSQL Support**: Includes JDBC driver (version 42.7.8)
 - **Persistent Storage**: Data persists across container restarts
 - **Secure Access**: HTTPS enabled on port 8443
-- **Terraform (AWS/Azure)**: Ready-to-init provider scaffolding
-- **Databricks Provider**: Configure with host/token to manage clusters/jobs
 
 ## Volumes
 
@@ -104,45 +86,6 @@ docker-compose up -d --build
 docker ps -a
 ```
 
-## Terraform
-
-### AWS
-1. Navigate to the AWS folder and initialize:
-```bash
-cd DataOps/terraform/aws
-terraform init
-```
-2. (Optional) Set region:
-```bash
-terraform plan -var aws_region=us-east-1
-```
-
-### Azure
-1. Ensure Azure auth is available (via `az login` or `ARM_*` env vars).
-2. Initialize:
-```bash
-cd DataOps/terraform/azure
-terraform init
-```
-3. (Optional) Specify location/IDs:
-```bash
-terraform plan -var location=eastus -var subscription_id=<SUB_ID> -var tenant_id=<TENANT_ID>
-```
-
-### Databricks
-1. Export credentials (recommended):
-```bash
-export DATABRICKS_HOST=https://<region>.azuredatabricks.net
-export DATABRICKS_TOKEN=<PAT_TOKEN>
-```
-2. Or pass via variables; then initialize:
-```bash
-cd DataOps/terraform/databricks
-terraform init
-```
-
-Note: No resources are defined by default. Add modules/resources per cloud as needed.
-
 ## Configuration
 
 ### Environment Variables
@@ -154,11 +97,6 @@ Note: No resources are defined by default. Add modules/resources per cloud as ne
 ### Custom Dependencies
 
 Additional JDBC drivers or libraries can be added by copying them to `/opt/nifi/nifi-current/lib/` in the Dockerfile.
-
-### Cloud Credentials
-- **AWS**: Uses default credential chain (env vars, config files, or `aws sso/login`).
-- **Azure**: Uses `az login` or `ARM_*` environment variables.
-- **Databricks**: Uses `DATABRICKS_HOST` and `DATABRICKS_TOKEN`.
 
 ## Troubleshooting
 
